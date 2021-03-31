@@ -75,19 +75,29 @@ s1 = tvtk.CubeSource(x_length=1.0, y_length=2.0, z_length=3.0)
 s2 = tvtk.ConeSource(center=(1, 5, 6))
 # pprint(dir(s2))
 print(s2)
+a = 1
+# a.__getattribute__()
+# # a.__se
+# a.__get
 # 显示一个三维度对象
-
-pprint(dir(s2.output_port))
-m = tvtk.PolyDataMapper(input_connection=s2.output_port)
-a = tvtk.Actor(mapper=m)
-b = tvtk.Actor(mapper =  tvtk.PolyDataMapper(input_connection=s1.output_port))
-r = tvtk.Renderer(background=(0, 0, 0))
-r.add_actor(a)
-r.add_actor(b)
-w = tvtk.RenderWindow(size=(500, 500))
-w.add_renderer(r)
-i = tvtk.RenderWindowInteractor(render_window=w)
-# i.initialize()
-i.start()
-
+for item in dir(tvtk):
+    if not item.endswith("Source"):continue
+    try:
+        s2 = tvtk.__getattribute__(item)()
+        if not hasattr(s2,"output_port"):print(item);continue
+        print("on:",item)
+        # pprint(dir(s2.output_port))
+        m = tvtk.PolyDataMapper(input_connection=s2.output_port)
+        a = tvtk.Actor(mapper=m)
+        # b = tvtk.Actor(mapper =  tvtk.PolyDataMapper(input_connection=s1.output_port))
+        r = tvtk.Renderer(background=(0, 0, 0))
+        r.add_actor(a)
+        # r.add_actor(b)
+        w = tvtk.RenderWindow(size=(500, 500))
+        w.add_renderer(r)
+        i = tvtk.RenderWindowInteractor(render_window=w)
+        # i.initialize()
+        i.start()
+    except:
+        pass
 # class
